@@ -1,0 +1,54 @@
+name: Automatic mirror from fortnite-sprite-checklist
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Japan time: 06:00, 12:00, 21:00 (UTC: 21:00, 03:00, 12:00)
+    - cron: "0 21 * * *"
+    - cron: "0 3 * * *"
+    - cron: "0 12 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mirror-from-fortnite-sprite-checklist
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout destination repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch source repository
+        run: git clone --depth 1 https://github.com/mylifereading6666-oss/fortnite-sprite-checklist.git /tmp/source
+
+      - name: Mirror source files
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.github/workflows/pages.yml' \
+            --exclude='.github/workflows/mirror-from-fortnite-sprite-checklist.yml' \
+            --exclude='.github/workflows/sync-upstream-mirror.yml' \
+            /tmp/source/ ./
+          git status --short
+
+      - name: Commit and push changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Mirror is already up to date."
+            exit 0
+          fi
+          git commit -m "Automated mirror from fortnite-sprite-checklist"
+          git push
