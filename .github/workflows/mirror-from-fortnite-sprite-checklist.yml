@@ -80,6 +80,10 @@ jobs:
                   '"miori_gumi_ch7s4"===n?(saveBackgroundState(),c()):await l(n)',
                   'await l(n)'
               ),
+              (
+                  'async function loadRuntimeLayer(e,t,n){const r=e.sources[n];if(!r?.path)throw new Error(\`runtime layer source is missing: \${n}\`);const a=resolveAssetUrl(r.path,t),i=await loadImage(a);if(3150!==i.naturalWidth||4200!==i.naturalHeight)throw new Error(\`unexpected image dimensions: \${n} \${i.naturalWidth}x\${i.naturalHeight}\`);globalThis.SpriteMasterVisualsV12.prepareInteractionLayer(i,n);const o=createRuntimeLayerSurface(i);return console.info(\`[VER10 LAYER LOAD] layer=\${n} source=\${i.naturalWidth}x\${i.naturalHeight} runtime=\${getLayerPixelWidth(o)}x\${getLayerPixelHeight(o)} reduced=\`+(isReducedRenderRuntime()?1:0)),o}',
+                  'async function loadRuntimeLayer(e,t,n){const r=e.sources[n];if(!r?.path)throw new Error(\`runtime layer source is missing: \${n}\`);const a=resolveAssetUrl(r.path,t),i=await loadImage(a),o=["background","vanguardBackground","mioriGumiBackground"].includes(n);if(!o&&(3150!==i.naturalWidth||4200!==i.naturalHeight))throw new Error(\`unexpected image dimensions: \${n} \${i.naturalWidth}x\${i.naturalHeight}\`);o||globalThis.SpriteMasterVisualsV12.prepareInteractionLayer(i,n);const s=createRuntimeLayerSurface(i);return console.info(\`[VER10 LAYER LOAD] layer=\${n} source=\${i.naturalWidth}x\${i.naturalHeight} runtime=\${getLayerPixelWidth(s)}x\${getLayerPixelHeight(s)} reduced=\`+(isReducedRenderRuntime()?1:0)),s}'
+              ),
           ]
           for old, new in replacements:
               count = app.count(old)
