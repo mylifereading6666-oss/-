@@ -2765,11 +2765,8 @@
     "background": {
       "path": "../images/ver12-palette-background.svg"
     },
-    "mioriGumiBackground": {
-      "path": "../images/ver12-palette-background.svg"
-    },
     "vanguardBackground": {
-      "path": "../images/ver12-palette-background.svg"
+      "path": "../images/ver12-vanguard-aevornjp.jpg"
     },
     "groupPanelLayer": {
       "path": "../images/ver12-family-panels.png",

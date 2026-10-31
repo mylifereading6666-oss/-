@@ -42,14 +42,16 @@ jobs:
             --exclude='v8/releases/g20261016a/images/ver12-vanguard-ii.png' \
             --exclude='v8/releases/g20261016a/images/ver12-miori-gumi.png' \
             --exclude='v8/releases/g20261016a/images/ver12-palette-background.svg' \
+            --exclude='v8/releases/g20261016a/images/ver12-vanguard-aevornjp.jpg' \
             /tmp/source/ ./
           python3 - <<'PY'
           import json
           from pathlib import Path
           path = Path('v8/releases/g20261016a/boards/layout-geometry.v12.json')
           data = json.loads(path.read_text(encoding='utf-8'))
-          for key in ('background', 'vanguardBackground', 'mioriGumiBackground'):
-              data['sources'][key] = {'path': '../images/ver12-palette-background.svg'}
+          data['sources']['background'] = {'path': '../images/ver12-palette-background.svg'}
+          data['sources']['vanguardBackground'] = {'path': '../images/ver12-vanguard-aevornjp.jpg'}
+          data['sources'].pop('mioriGumiBackground', None)
           path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
           PY
           git status --short
