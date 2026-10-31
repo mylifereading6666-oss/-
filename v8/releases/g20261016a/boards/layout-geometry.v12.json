@@ -2763,16 +2763,13 @@
   ],
   "sources": {
     "background": {
-      "path": "../images/ver12-background.png",
-      "sha256": "58327F2A84DD66E8D89C930FCC27979E3B56D902867AB898094F1CE408241761"
+      "path": "../images/ver12-palette-background.svg"
     },
     "mioriGumiBackground": {
-      "path": "../images/ver12-miori-gumi.png",
-      "sha256": "AEB83D219D9DC5EBEA531EDC35F5BC326A50725B0967989839553496A6E2837B"
+      "path": "../images/ver12-palette-background.svg"
     },
     "vanguardBackground": {
-      "path": "../images/ver12-vanguard-ii.png",
-      "sha256": "9C639E4B2C625E68CD3B4D1C5BB91F53A917E61CA1556E1A841A14591C589FBC"
+      "path": "../images/ver12-palette-background.svg"
     },
     "groupPanelLayer": {
       "path": "../images/ver12-family-panels.png",
