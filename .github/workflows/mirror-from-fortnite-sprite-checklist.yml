@@ -36,6 +36,8 @@ jobs:
             --exclude='.github/workflows/pages.yml' \
             --exclude='.github/workflows/mirror-from-fortnite-sprite-checklist.yml' \
             --exclude='.github/workflows/sync-upstream-mirror.yml' \
+            --exclude='v8/app.js' \
+            --exclude='v8/index.html' \
             --exclude='v8/releases/g20261016a/images/ver12-background.png' \
             --exclude='v8/releases/g20261016a/images/ver12-vanguard-ii.png' \
             --exclude='v8/releases/g20261016a/images/ver12-miori-gumi.png' \
