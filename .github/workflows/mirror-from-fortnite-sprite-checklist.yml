@@ -61,7 +61,7 @@ jobs:
                   'backgroundCodePlaceholder:"16文字のコードを入力",backgroundConfirm:"決定",backgroundUnlockedTitle:"解放済み背景",backgroundDefaultLabel:"標準背景",backgroundAev0rnLabel:"Aev0rn",'
               ),
               (
-                  'backgroundCodePlaceholder:"Enter the 8-character code",backgroundConfirm:"Apply",backgroundUnlockedTitle:"Unlocked backgrounds",backgroundDefaultLabel:"Default Background",backgroundVanguardLabel:"VANGUARD II",backgroundMioriLabel:"Miori Gumi Bonus Background",',
+                  'backgroundCodePlaceholder:"Enter the 8-character code",backgroundConfirm:"Apply",backgroundUnlockedTitle:"Unlocked backgrounds",backgroundDefaultLabel:"Default Background",backgroundVanguardLabel:"VANGUARD II",backgroundMioriLabel:"Miori-Gumi Bonus Background",',
                   'backgroundCodePlaceholder:"Enter the 16-character code",backgroundConfirm:"Apply",backgroundUnlockedTitle:"Unlocked backgrounds",backgroundDefaultLabel:"Default Background",backgroundAev0rnLabel:"Aev0rn",'
               ),
               (
