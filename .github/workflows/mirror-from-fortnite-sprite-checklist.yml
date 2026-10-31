@@ -36,17 +36,58 @@ jobs:
             --exclude='.github/workflows/pages.yml' \
             --exclude='.github/workflows/mirror-from-fortnite-sprite-checklist.yml' \
             --exclude='.github/workflows/sync-upstream-mirror.yml' \
-            --exclude='v8/app.js' \
-            --exclude='v8/index.html' \
-            --exclude='v8/releases/g20261016a/images/ver12-background.png' \
-            --exclude='v8/releases/g20261016a/images/ver12-vanguard-ii.png' \
-            --exclude='v8/releases/g20261016a/images/ver12-miori-gumi.png' \
             --exclude='v8/releases/g20261016a/images/ver12-palette-background.svg' \
             --exclude='v8/releases/g20261016a/images/ver12-vanguard-aevornjp.jpg' \
             /tmp/source/ ./
           python3 - <<'PY'
           import json
           from pathlib import Path
+
+          # Reapply only the destination-specific Aev0rn background unlock
+          # on top of the freshly mirrored upstream app.js.
+          app_path = Path('v8/app.js')
+          app = app_path.read_text(encoding='utf-8')
+          replacements = [
+              (
+                  'VANGUARD_BACKGROUND_ID="vanguard_ii",VANGUARD_BACKGROUND_CODE_SHA256="3F1B757CDE5CEAF09BBDC5BA7C51F313AC5153D024763E403B51E579AE4AF385",MIORI_BACKGROUND_ID="miori_gumi_ch7s4",MIORI_BACKGROUND_CODE_SHA256="420463BFDD2DA3AE3E24E357F3F365CD9C0E214741725A94F4457DC7CC0460FC"',
+                  'AEV0RN_BACKGROUND_ID="aev0rn",AEV0RN_BACKGROUND_CODE_SHA256="26234C3B1540B36C30FF0553061337A8DE0D4D87500BD86880F5DE0A2602C7A8"'
+              ),
+              (
+                  'function backgroundLayerName(e){return"miori_gumi_ch7s4"===e?"mioriGumiBackground":"vanguard_ii"===e?"vanguardBackground":"background"}',
+                  'function backgroundLayerName(e){return"aev0rn"===e?"vanguardBackground":"background"}'
+              ),
+              (
+                  'backgroundCodePlaceholder:"8文字のコードを入力",backgroundConfirm:"決定",backgroundUnlockedTitle:"解放済み背景",backgroundDefaultLabel:"標準背景",backgroundVanguardLabel:"VANGUARD II",backgroundMioriLabel:"みおり組特典背景",',
+                  'backgroundCodePlaceholder:"16文字のコードを入力",backgroundConfirm:"決定",backgroundUnlockedTitle:"解放済み背景",backgroundDefaultLabel:"標準背景",backgroundAev0rnLabel:"Aev0rn",'
+              ),
+              (
+                  'backgroundCodePlaceholder:"Enter the 8-character code",backgroundConfirm:"Apply",backgroundUnlockedTitle:"Unlocked backgrounds",backgroundDefaultLabel:"Default Background",backgroundVanguardLabel:"VANGUARD II",backgroundMioriLabel:"Miori Gumi Bonus Background",',
+                  'backgroundCodePlaceholder:"Enter the 16-character code",backgroundConfirm:"Apply",backgroundUnlockedTitle:"Unlocked backgrounds",backgroundDefaultLabel:"Default Background",backgroundAev0rnLabel:"Aev0rn",'
+              ),
+              (
+                  'function configuredBackgroundIds(){return["default","vanguard_ii","miori_gumi_ch7s4"]}',
+                  'function configuredBackgroundIds(){return["default","aev0rn"]}'
+              ),
+              (
+                  'function backgroundLabel(e){return t("miori_gumi_ch7s4"===e?"backgroundMioriLabel":"vanguard_ii"===e?"backgroundVanguardLabel":"backgroundDefaultLabel")}',
+                  'function backgroundLabel(e){return t("aev0rn"===e?"backgroundAev0rnLabel":"backgroundDefaultLabel")}'
+              ),
+              (
+                  'const e=await sha256UpperBackgroundCode(s.codeInput.value),n=e===MIORI_BACKGROUND_CODE_SHA256?"miori_gumi_ch7s4":e===VANGUARD_BACKGROUND_CODE_SHA256?"vanguard_ii":null;',
+                  'const e=await sha256UpperBackgroundCode(s.codeInput.value),n=e===AEV0RN_BACKGROUND_CODE_SHA256?"aev0rn":null;'
+              ),
+              (
+                  '"miori_gumi_ch7s4"===n?(saveBackgroundState(),c()):await l(n)',
+                  'await l(n)'
+              ),
+          ]
+          for old, new in replacements:
+              count = app.count(old)
+              if count != 1:
+                  raise SystemExit(f'Aev0rn patch expected exactly one match, got {count}: {old[:100]}')
+              app = app.replace(old, new, 1)
+          app_path.write_text(app, encoding='utf-8')
+
           path = Path('v8/releases/g20261016a/boards/layout-geometry.v12.json')
           data = json.loads(path.read_text(encoding='utf-8'))
           data['sources']['background'] = {'path': '../images/ver12-palette-background.svg'}
