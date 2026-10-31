@@ -31,10 +31,10 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload site files from v8
+      - name: Upload complete site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: v8
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
